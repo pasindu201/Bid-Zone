@@ -7,6 +7,8 @@ export const items =  [
       amazonLink: 'https://amzn.to/3PuckZp',
       description: 'Apple iPhone 14 (128 GB) - Blue',
       price: '89999',
+      start_auction: '12-3-2024',
+      end_auction: '13-3-2024',
     },
     {
       id: 5,

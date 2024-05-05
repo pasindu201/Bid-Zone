@@ -1,12 +1,19 @@
 import React from "react";
-
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from './../components/Navbar'
 
-const Product = ({items, cart , setCart}) => {
+const Product = ({items, cart , setCart, setData}) => {
+  const { userName } = useParams();
+
    
   const addToCart = (id,price,title,description,imgSrc) =>{
+
+    const handleBid = async () => {
+      
+    };
+  
     const obj = {
       id,price,title,description,imgSrc
     }
@@ -26,6 +33,7 @@ const Product = ({items, cart , setCart}) => {
 
   return (
     <>
+    <Navbar cart={cart} setData={setData} userName={userName}/>
     <ToastContainer
 position="top-right"
 autoClose={1500}
@@ -45,29 +53,26 @@ theme="dark"
               <>
                 <div key={product.id} className="col-lg-4 col-md-6 my-3 text-center">
                   <div className="card" style={{ width: "18rem" }}>
-                    <Link to={`/product/${product.id}`}
-                     style={{
-                        display:'flex',
-                        justifyContent:'center',
-                        alignItems:'center'
-                    }}>
-
                     <img
-                      src={product.imgSrc}
+                      src={`data:image/jpeg;base64,${product.imgSrc}`}
                       className="card-img-top"
                       alt="..."
-                      />
-                      </Link>
+                      />                     
                     <div className="card-body">
                       <h5 className="card-title">{product.title}</h5>
                       <p className="card-text">{product.description}</p>
-                      <button className="btn btn-primary mx-3">
-                        {product.price} ₹
+                      <hr/>
+                      <p className="card-text">Starting : {product.start_action}</p>
+                      <p className="card-text">End :{product.end_auction}</p>
+                      <p className="card-text">Minimun Price :{product.minimum_price}</p>
+                      <button className="btn btn-primary mx-3 mb-3">
+                        Max Bid :{product.minimum_price} LKR
                       </button>
+                      <input className="mb-3" id="myPrice" type="text" placeholder="Your bid" required/>                     
                       <button
                       onClick={()=>addToCart(product.id,product.price,product.title,product.description,product.imgSrc)}
                        className="btn btn-warning"
-                       >Add To Cart</button>
+                       >Submit</button>
                     </div>
                   </div>
                 </div>

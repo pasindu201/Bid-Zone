@@ -1,10 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Blob;
 import java.util.Base64;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void saveUser(User user) {
+    public void saveUser(UserEntity user) {
         userRepository.save(user);
     }
 
@@ -22,23 +23,23 @@ public class UserService {
         userRepository.deleteByUserName(userName);
     }
 
-    private String encodeToString(byte[] image) {
+    private String encodeToString(Blob imageBlob) {
         try {
-            return Base64.getEncoder().encodeToString(image);
+            byte[] imageBytes = imageBlob.getBytes(1, (int)imageBlob.length());
+            return Base64.getEncoder().encodeToString(imageBytes);
         } catch (Exception e) {
             return null;
         }
     }
 
     public String getProfilePicture(String userName) {
-        List<User> users = userRepository.findByuserName(userName);
-        User user = users.get(0);
-        String profilePicture = encodeToString(user.getProfile());
-        return profilePicture;
+        List<UserEntity> users = userRepository.findByuserName(userName);
+        UserEntity user = users.get(0);
+        return encodeToString(user.getProfile());
     }
 
     public boolean verifyPassword(String userName, String password) {
-        User user = userRepository.findByUserNameAndPassword(userName, password);
+        UserEntity user = userRepository.findByUserNameAndPassword(userName, password);
         return user != null;
     }
 }

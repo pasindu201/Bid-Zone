@@ -1,21 +1,25 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.sql.Blob;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "users")
-public class User {
+@Entity
+@Table(name = "users")
+public class UserEntity {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String userName;
     private String address;
     private String email;
     private String password;
-    private byte[] profile;
+    @Lob
+    private Blob profile;
 }

@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from './../components/Navbar'
 
-const Cart = ({cart,setCart}) => {
+const Cart = ({cart,setCart,setData }) => {
   return (
     <>
+    <Navbar cart={cart} setData={setData} userName={userName}/>
     <div className="container my-5" style={{width:"54%"}}>
       {
         cart.length==0 ?(
@@ -26,8 +28,11 @@ const Cart = ({cart,setCart}) => {
       <div className="card-body text-center">
         <h5 className="card-title">{product.title}</h5>
         <p className="card-text">{product.description}</p>
+        <hr/>
+                      <p className="card-text">Starting : {product.start_auction}</p>
+                      <p className="card-text">End :{product.end_auction}</p>
         <button className="btn btn-primary mx-3">
-                        {product.price} ₹
+                        {product.price} LKR
                       </button>
                       <button
                  

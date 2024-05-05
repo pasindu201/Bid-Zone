@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.UserEntity;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.sql.Blob;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -20,18 +22,21 @@ public class UserController {
     public ResponseEntity<String> saveUser(@RequestParam("userName") String userName,
                                            @RequestParam("email") String email,
                                            @RequestParam("password") String password,
-                                           @RequestParam("profilePicture") MultipartFile profilePicture) {
+                                           @RequestParam("profilePicture") MultipartFile profilePicture,
+                                           @RequestParam("address") String address) {
         try {
             // Create a new User object
-            User user = new User();
+            UserEntity user = new UserEntity();
             user.setUserName(userName);
             user.setEmail(email);
-            user.setPassword(password);  // Store the plain text password (not recommended in production)
+            user.setPassword(password);
+            user.setAddress(address);
 
             // Set the profile picture, if provided
             if (profilePicture != null && !profilePicture.isEmpty()) {
                 byte[] profileData = profilePicture.getBytes();
-                user.setProfile(profileData);
+                Blob blobImage = new javax.sql.rowset.serial.SerialBlob(profileData);
+                user.setProfile(blobImage);
             }
 
             // Save the user using the UserService
